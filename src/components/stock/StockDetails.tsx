@@ -28,7 +28,7 @@ interface Profile {
 
 const StockDetails = () => {
 	const { stockSymbol, setStockSymbol } = useStockSymbol();
-	const [profile, setProfile] = useState<Profile>();
+	const [profile, setProfile] = useState<any>();
 
 	useEffect(() => {
 		const updateStockProfile = async () => {

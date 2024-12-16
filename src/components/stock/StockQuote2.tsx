@@ -23,7 +23,7 @@ interface Quote {
 
 const StockQuote2 = () => {
 	const { stockSymbol, setStockSymbol } = useStockSymbol();
-	const [quote, setQuote] = useState<Quote>();
+	const [quote, setQuote] = useState<any>();
 
 	useEffect(() => {
 		const updateStockProfile = async () => {
