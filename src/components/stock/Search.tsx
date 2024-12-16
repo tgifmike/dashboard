@@ -6,15 +6,15 @@ import { Button } from '../ui/button';
 import SearchResults2 from './SearchResults2';
 
 
-interface StockSymbol {
-	symbol: string;
-	description: string;
-}
+// interface StockSymbol {
+// 	symbol: string;
+// 	description: string;
+// }
 
 const Search = () => {
 	const [input, setInput] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
-	const [matches, setMatches] = useState<StockSymbol[]>([]);
+	const [results, setResults] = useState<any>([]);
 
 	const findMatches = async () => {
 		try {
@@ -22,10 +22,10 @@ const Search = () => {
 				setLoading(true);
 				const searchResults = await fetch(`/api/stock/search/?symbol=${input}`);
 				const list = await searchResults.json();
-				setMatches(list.result);
+				setResults(list.result);
 			}
 		} catch (error) {
-			setMatches([]);
+			setResults([]);
 			console.log(error);
 		} finally {
 			setLoading(false);
@@ -34,7 +34,7 @@ const Search = () => {
 
 	const clear = () => {
 		setInput('');
-		setMatches([]);
+		setResults([]);
 	};
 
 	return (
@@ -57,8 +57,8 @@ const Search = () => {
 					</Button>
 				</div>
 				<div className="w-1/4">
-					{input && matches.length > 0 ? (
-						<SearchResults2 matches={matches} />
+					{input && results.length > 0 ? (
+						<SearchResults2 matches={results} />
 					) : null}
 				</div>
 			</div>

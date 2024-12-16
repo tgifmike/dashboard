@@ -12,15 +12,15 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Button } from '../ui/button';
-import { useState } from 'react';
+
+import { FC, useState } from 'react';
 
 interface StockSymbol {
 	symbol: string;
 	description: string;
 }
 
-const SearchResults2: React.FC<StockSymbol> = ({ matches }) => {
+const SearchResults2 = ({ matches }: any) => {
 	const { stockSymbol, setStockSymbol } = useStockSymbol();
 	const [localSelection, setLocalSelection] = useState('');
 
