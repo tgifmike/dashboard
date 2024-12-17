@@ -22,7 +22,7 @@ interface StockSymbol {
 
 const SearchResults2 = ({ matches }: any) => {
 	const { stockSymbol, setStockSymbol } = useStockSymbol();
-	const [localSelection, setLocalSelection] = useState('');
+	// const [localSelection, setLocalSelection] = useState('');
 
 	const handleChange = (value: string) => {
 		setStockSymbol(value);

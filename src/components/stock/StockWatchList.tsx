@@ -101,7 +101,7 @@ const StockWatchList = () => {
 	}, [agnc]);
 
 	return (
-		<main className="w-1/2">
+		<main className="w-2/3 m-1">
 			<Card>
 				<CardHeader>
 					<CardTitle>Watch List</CardTitle>
@@ -113,7 +113,7 @@ const StockWatchList = () => {
 							<TableRow>
 								<TableHead className="w-[100px]">Stock</TableHead>
 								<TableHead>Current Price</TableHead>
-								<TableHead>Change</TableHead>
+								<TableHead>Change $</TableHead>
 								<TableHead>Percent Change</TableHead>
 								<TableHead>High</TableHead>
 								<TableHead>Low</TableHead>
@@ -124,7 +124,7 @@ const StockWatchList = () => {
 						<TableBody>
 							<TableRow>
 								<TableCell className="font-medium">Verizon</TableCell>
-								<TableCell>{Number(verizonQuote?.d).toFixed(2)}</TableCell>
+								<TableCell>{Number(verizonQuote?.c).toFixed(2)}</TableCell>
 								<TableCell
 									className={
 										Number(verizonQuote?.d) > 0

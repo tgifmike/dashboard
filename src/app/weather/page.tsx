@@ -1,4 +1,5 @@
 'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
 	Table,
@@ -9,14 +10,16 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 import React, { useEffect, useState } from 'react';
+import { useZipCode } from '../context/ZipCodeContext';
 
 const extendedForecast = () => {
 	const [forecast, setForcast] = useState<any>();
+	const { zipCode, setZipCode } = useZipCode();
 
 	useEffect(() => {
 		const updateForecast = async () => {
 			try {
-				const fetchForecast = await fetch(`/api/weather?`);
+				const fetchForecast = await fetch(`/api/weather?zip=${zipCode}`);
 				const forecast = await fetchForecast.json();
 				setForcast(forecast);
 			} catch (error) {
@@ -44,12 +47,20 @@ const extendedForecast = () => {
 
 	let formatedDate = formatDate(todaysDate);
 
-	console.log(forecast);
 	return (
-		<main>
+		<main className="">
 			<Card>
 				<CardHeader>
-					<CardTitle>Extended Forecast</CardTitle>
+					<CardTitle>
+						<div>
+							<div>Extended Forecast</div>
+
+							<div className="flex justify-start items-center font-thin gap-4">
+								<p>Current ZipCode</p>
+								<p>{zipCode}</p>
+							</div>
+						</div>
+					</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Table>
@@ -71,7 +82,7 @@ const extendedForecast = () => {
 						</TableHeader>
 						<TableBody>
 							{forecast?.days.map((day: any) => (
-								<TableRow>
+								<TableRow key={day.datetime}>
 									<TableCell>
 										{day.datetime === formatedDate ? 'Today' : day.datetime}
 									</TableCell>

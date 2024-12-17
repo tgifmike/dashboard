@@ -6,15 +6,21 @@ export async function GET(request: Request): Promise<NextResponse> {
 	const baseURL: string =
 		'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline';
 
-	https: if (!Weather_API_KEY) {
+	if (!Weather_API_KEY) {
 		return NextResponse.json(
 			{ error: 'API_KEY is not configured' },
 			{ status: 500 }
 		);
 	}
 
-	const url = new URL(request.url);
-	const apiUrl = `${baseURL}/${WeatherZipCode}?key=${Weather_API_KEY}`;
+    const url = new URL(request.url);
+    const zip = url.searchParams.get('zip');
+
+    if (!zip) {
+        return NextResponse.json({error: 'Zip Code is required'} , {status: 400})
+    }
+
+	const apiUrl = `${baseURL}/${zip}?key=${Weather_API_KEY}`;
 
 	try {
 		const response = await fetch(apiUrl);
