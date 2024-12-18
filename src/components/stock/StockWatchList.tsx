@@ -239,7 +239,7 @@ const StockWatchList = () => {
 				</CardContent>
 				<CardFooter>
 					<Link href="/stock_research" className={buttonVariants()}>
-						Resarch Stocks
+						Research Stocks
 					</Link>
 				</CardFooter>
 			</Card>
