@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request): Promise<NextResponse> {
-	const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY;
+	const FMP_API_KEY = process.env.FMP_API_KEY;
 
-	const FINNHUBbaseUrl: string = 'https://finnhub.io/api/v1';
+	const baseURL: string = 'https://financialmodelingprep.com/api/v3';
 
-	if (!FINNHUB_API_KEY) {
+	if (!FMP_API_KEY) {
 		return NextResponse.json(
-			{ error: 'FMP_API_KEY is not configured' },
+			{ error: 'API_KEY is not configured' },
 			{ status: 500 }
 		);
 	}
@@ -19,7 +19,7 @@ export async function GET(request: Request): Promise<NextResponse> {
 		return NextResponse.json({ error: 'Symbol is required' }, { status: 400 });
 	}
 
-	const apiUrl = `${FINNHUBbaseUrl}/quote?symbol=${symbol}&token=${FINNHUB_API_KEY}`;
+	const apiUrl = `${baseURL}/quote/${symbol}?apikey=${FMP_API_KEY}`;
 
 	try {
 		const response = await fetch(apiUrl);

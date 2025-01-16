@@ -22,26 +22,45 @@ import {
 } from '../ui/card';
 
 interface Quote {
-	c: number;
-	h: number;
-	l: number;
-	o: number;
-	pc: number;
-	t: number;
-	d: number;
-	dp: number;
+	name: string;
+	price: number;
+	changesPercentage: number;
+	change: number;
+	dayLow: number;
+	dayHigh: number;
+	yearHigh: number;
+	yearLow: number;
+	open: number;
+	previousClose: number;
 }
+[];
 
 const StockWatchList = () => {
 	const horizon = 'HRZN';
-	const [horizonQuote, setHorizonQuote] = useState<Quote>();
+	const [horizonQuote, setHorizonQuote] = useState<any>();
 	const agnc = 'AGNC';
-	const [AGNCQuote, setAGNCQuote] = useState<Quote>();
-
+	const [AGNCQuote, setAGNCQuote] = useState<any>();
 	const verizon = 'VZ';
-	const [verizonQuote, setVerizonQuote] = useState<Quote>();
+	const [verizonQuote, setVerizonQuote] = useState<any>();
 	const global = 'GPN';
-	const [globalQuote, setGlobalQuote] = useState<Quote>();
+	const [globalQuote, setGlobalQuote] = useState<any>();
+	const crudeOil = 'CL=F';
+	const [oilQuote, setOilQuote] = useState<any>();
+
+	useEffect(() => {
+		const getCrudeOilStockQuote = async () => {
+			try {
+				const fetchQuote = await fetch(`/api/stock/quote/?symbol=${crudeOil}`);
+				const quote = await fetchQuote.json();
+				setOilQuote(quote);
+			} catch (error) {
+				//setStockDetails()
+				console.log(error);
+			}
+		};
+
+		getCrudeOilStockQuote();
+	}, []);
 
 	useEffect(() => {
 		const getVerizonStockQuote = async () => {
@@ -50,13 +69,14 @@ const StockWatchList = () => {
 				const quote = await fetchQuote.json();
 				setVerizonQuote(quote);
 			} catch (error) {
-				//setStockDetails()
 				console.log(error);
 			}
 		};
 
 		getVerizonStockQuote();
 	}, [verizon]);
+
+	
 	useEffect(() => {
 		const getGlobalStockQuote = async () => {
 			try {
@@ -71,6 +91,7 @@ const StockWatchList = () => {
 
 		getGlobalStockQuote();
 	}, [global]);
+
 	useEffect(() => {
 		const getHorizonStockQuote = async () => {
 			try {
@@ -85,6 +106,7 @@ const StockWatchList = () => {
 
 		getHorizonStockQuote();
 	}, [horizon]);
+
 	useEffect(() => {
 		const getAGNCStockQuote = async () => {
 			try {
@@ -100,138 +122,265 @@ const StockWatchList = () => {
 		getAGNCStockQuote();
 	}, [agnc]);
 
+	if (!verizonQuote || verizonQuote.length === 0) {
+		return <div>No data available for symbol: {verizon}</div>;
+	}
+	if (!globalQuote || globalQuote.length === 0) {
+		return <div>No data available for symbol: {global}</div>;
+	}
+	if (!horizonQuote || horizonQuote.length === 0) {
+		return <div>No data available for symbol: {horizon}</div>;
+	}
+	if (!AGNCQuote || AGNCQuote.length === 0) {
+		return <div>No data available for symbol: {agnc}</div>;
+	}
+	if (!oilQuote || oilQuote.length === 0) {
+		return <div>No data available for symbol: {crudeOil}</div>;
+	}
+
 	return (
-		<main className="w-2/3 m-1">
-			<Card>
+		<main className="w-11/12 m-1">
+			<Card className="p-0">
 				<CardHeader>
 					<CardTitle>Watch List</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<Table>
+					<Table className="p-0 m-0">
 						<TableCaption></TableCaption>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="w-[100px]">Stock</TableHead>
-								<TableHead>Current Price</TableHead>
-								<TableHead>Change $</TableHead>
-								<TableHead>Percent Change</TableHead>
-								<TableHead>High</TableHead>
-								<TableHead>Low</TableHead>
+								<TableHead className="w-[200px]">Stock</TableHead>
+								<TableHead className="text-center">Price</TableHead>
+								<TableHead className="text-center">+/-</TableHead>
+								<TableHead className="text-center">+/-</TableHead>
+								<TableHead className="text-center">H</TableHead>
+								<TableHead className="text-center">L</TableHead>
+								<TableHead className="text-center">52 H</TableHead>
+								<TableHead className="text-center">52 L</TableHead>
 								<TableHead>Open</TableHead>
-								<TableHead className="text-right">Previous Close</TableHead>
+
+								<TableHead className="text-right">PC</TableHead>
 							</TableRow>
 						</TableHeader>
-						<TableBody>
-							<TableRow>
-								<TableCell className="font-medium">Verizon</TableCell>
-								<TableCell>{Number(verizonQuote?.c).toFixed(2)}</TableCell>
-								<TableCell
-									className={
-										Number(verizonQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
-									}
-								>
-									{Number(verizonQuote?.d).toFixed(2)}
+						<TableBody className="">
+							<TableRow className="">
+								<TableCell className="font-medium">
+									{verizonQuote[0]?.name}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(verizonQuote[0]?.price).toFixed(2)}
 								</TableCell>
 								<TableCell
 									className={
-										Number(verizonQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
+										Number(verizonQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
 									}
 								>
-									{Number(verizonQuote?.dp).toFixed(2)} %
+									${Number(verizonQuote[0]?.change).toFixed(2)}
 								</TableCell>
-								<TableCell>{Number(verizonQuote?.h).toFixed(2)}</TableCell>
-								<TableCell>{Number(verizonQuote?.l).toFixed(2)}</TableCell>
-								<TableCell>{Number(verizonQuote?.o).toFixed(2)}</TableCell>
-								<TableCell className="text-right">
-									{Number(verizonQuote?.pc).toFixed(2)}
+								<TableCell
+									className={
+										Number(verizonQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
+									}
+								>
+									{Number(verizonQuote[0]?.changesPercentage).toFixed(2)}%
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(verizonQuote[0]?.dayHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(verizonQuote[0]?.dayLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(verizonQuote[0]?.yearHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(verizonQuote[0]?.yearLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(verizonQuote[0]?.open).toFixed(2)}
+								</TableCell>
+								<TableCell className="text-right p-0">
+									${Number(verizonQuote[0]?.previousClose).toFixed(2)}
 								</TableCell>
 							</TableRow>
 							<TableRow>
-								<TableCell className="font-medium">Global</TableCell>
-								<TableCell>{Number(globalQuote?.c).toFixed(2)}</TableCell>
-								<TableCell
-									className={
-										Number(globalQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
-									}
-								>
-									{Number(globalQuote?.d).toFixed(2)}
+								<TableCell className="font-medium">
+									{globalQuote[0]?.name}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(globalQuote[0]?.price).toFixed(2)}
 								</TableCell>
 								<TableCell
 									className={
-										Number(globalQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
+										Number(globalQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
 									}
 								>
-									{Number(globalQuote?.dp).toFixed(2)} %
+									${Number(globalQuote[0]?.change).toFixed(2)}
 								</TableCell>
-								<TableCell>{Number(globalQuote?.h).toFixed(2)}</TableCell>
-								<TableCell>{Number(globalQuote?.l).toFixed(2)}</TableCell>
-								<TableCell>{Number(globalQuote?.o).toFixed(2)}</TableCell>
-								<TableCell className="text-right">
-									{Number(globalQuote?.pc).toFixed(2)}
+								<TableCell
+									className={
+										Number(globalQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
+									}
+								>
+									{Number(globalQuote[0]?.changesPercentage).toFixed(2)}%
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(globalQuote[0]?.dayHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(globalQuote[0]?.dayLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(globalQuote[0]?.yearHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(globalQuote[0]?.yearLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(globalQuote[0]?.open).toFixed(2)}
+								</TableCell>
+								<TableCell className="text-right p-0">
+									${Number(globalQuote[0]?.previousClose).toFixed(2)}
 								</TableCell>
 							</TableRow>
 							<TableRow>
-								<TableCell className="font-medium">Horizon</TableCell>
-								<TableCell>{Number(horizonQuote?.c).toFixed(2)}</TableCell>
-								<TableCell
-									className={
-										Number(horizonQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
-									}
-								>
-									{Number(horizonQuote?.d).toFixed(2)}
+								<TableCell className="font-medium">
+									{horizonQuote[0]?.name}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(horizonQuote[0]?.price).toFixed(2)}
 								</TableCell>
 								<TableCell
 									className={
-										Number(horizonQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
+										Number(horizonQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
 									}
 								>
-									{Number(horizonQuote?.dp).toFixed(2)} %
+									${Number(horizonQuote[0]?.change).toFixed(2)}
 								</TableCell>
-								<TableCell>{Number(horizonQuote?.h).toFixed(2)}</TableCell>
-								<TableCell>{Number(horizonQuote?.l).toFixed(2)}</TableCell>
-								<TableCell>{Number(horizonQuote?.o).toFixed(2)}</TableCell>
-								<TableCell className="text-right">
-									{Number(horizonQuote?.pc).toFixed(2)}
+								<TableCell
+									className={
+										Number(horizonQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
+									}
+								>
+									{Number(horizonQuote[0]?.changesPercentage).toFixed(2)}%
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(horizonQuote[0]?.dayHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(horizonQuote[0]?.dayLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(horizonQuote[0]?.yearHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(horizonQuote[0]?.yearLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(horizonQuote[0]?.open).toFixed(2)}
+								</TableCell>
+								<TableCell className="text-right p-0">
+									${Number(horizonQuote[0]?.previousClose).toFixed(2)}
 								</TableCell>
 							</TableRow>
 							<TableRow>
-								<TableCell className="font-medium">AGNC</TableCell>
-								<TableCell>{Number(AGNCQuote?.c).toFixed(2)}</TableCell>
-								<TableCell
-									className={
-										Number(AGNCQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
-									}
-								>
-									{Number(AGNCQuote?.d).toFixed(2)}
+								<TableCell className="font-medium">
+									{AGNCQuote[0]?.name}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(AGNCQuote[0]?.price).toFixed(2)}
 								</TableCell>
 								<TableCell
 									className={
-										Number(AGNCQuote?.d) > 0
-											? 'text-green-500 '
-											: 'text-red-500 '
+										Number(AGNCQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
 									}
 								>
-									{Number(AGNCQuote?.dp).toFixed(2)} %
+									${Number(AGNCQuote[0]?.change).toFixed(2)}
 								</TableCell>
-								<TableCell>{Number(AGNCQuote?.h).toFixed(2)}</TableCell>
-								<TableCell>{Number(AGNCQuote?.l).toFixed(2)}</TableCell>
-								<TableCell>{Number(AGNCQuote?.o).toFixed(2)}</TableCell>
-								<TableCell className="text-right">
-									{Number(AGNCQuote?.pc).toFixed(2)}
+								<TableCell
+									className={
+										Number(AGNCQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
+									}
+								>
+									{Number(AGNCQuote[0]?.changesPercentage).toFixed(2)}%
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(AGNCQuote[0]?.dayHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(AGNCQuote[0]?.dayLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(AGNCQuote[0]?.yearHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(AGNCQuote[0]?.yearLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(AGNCQuote[0]?.open).toFixed(2)}
+								</TableCell>
+								<TableCell className="text-right p-0">
+									${Number(AGNCQuote[0]?.previousClose).toFixed(2)}
+								</TableCell>
+							</TableRow>
+							<TableRow>
+								<TableCell className="font-medium">
+									{oilQuote[0]?.name}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(oilQuote[0]?.price).toFixed(2)}
+								</TableCell>
+								<TableCell
+									className={
+										Number(oilQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
+									}
+								>
+									${Number(oilQuote[0]?.change).toFixed(2)}
+								</TableCell>
+								<TableCell
+									className={
+										Number(oilQuote[0]?.change) > 0
+											? 'text-green-500 text-center'
+											: 'text-red-500 text-center'
+									}
+								>
+									{Number(oilQuote[0]?.changesPercentage).toFixed(2)}%
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(oilQuote[0]?.dayHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(oilQuote[0]?.dayLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(oilQuote[0]?.yearHigh).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(oilQuote[0]?.yearLow).toFixed(2)}
+								</TableCell>
+								<TableCell className="p-0 text-center">
+									${Number(oilQuote[0]?.open).toFixed(2)}
+								</TableCell>
+								<TableCell className="text-right p-0">
+									${Number(oilQuote[0]?.previousClose).toFixed(2)}
 								</TableCell>
 							</TableRow>
 						</TableBody>
