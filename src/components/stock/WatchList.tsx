@@ -87,7 +87,7 @@ const WatchList = () => {
 		<main className="w-5/6 m-1">
 			<Card className="p-0">
 				<CardHeader>
-					<CardTitle>New Watch List</CardTitle>
+					<CardTitle>Watch List</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Table className="p-0 m-0">
@@ -205,10 +205,17 @@ const WatchList = () => {
 						</TableBody>
 					</Table>
 				</CardContent>
-				<CardFooter>
-					<Link href="/stock_research" className={buttonVariants()}>
-						Research Stocks
-					</Link>
+				<CardFooter className="">
+					<div className="p-2">
+						<Link href="/stock_research" className={buttonVariants()}>
+							Research Stocks
+						</Link>
+					</div>
+					<div className="p-2">
+						<Link href="/forecast" className={buttonVariants()}>
+							Stock Dividends
+						</Link>
+					</div>
 				</CardFooter>
 			</Card>
 		</main>

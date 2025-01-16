@@ -11,15 +11,7 @@ import {
 	CardTitle,
 } from '../ui/card';
 
-interface Quote {
-	c: number;
-	h: number;
-	l: number;
-	o: number;
-	pc: number;
-	t: number;
-	d: number;
-}
+
 
 const StockQuote2 = () => {
 	const { stockSymbol, setStockSymbol } = useStockSymbol();
@@ -42,6 +34,11 @@ const StockQuote2 = () => {
 		updateStockProfile();
 	}, [stockSymbol]);
 
+
+	if (!quote || quote.length < 1) {
+		return <div>No data available </div>;
+	}
+
 	return (
 		<main className="m-2">
 			<Card>
@@ -52,33 +49,36 @@ const StockQuote2 = () => {
 					<CardDescription></CardDescription>
 				</CardHeader>
 				<CardContent>
+					{/* {quote.map((item: any) => ( */}
 					<div className="flex flex-col md:flex-row items-center gap-2">
 						<div className="text-xl md:text-5xl font-semibold">
-							$ {quote?.c?.toFixed(2)}
+							$ {quote[0]?.price.toFixed(2)}
 						</div>
 						<div
 							className={
-								quote?.d > 0
+								quote.change > 0
 									? 'text-green-500 text-md md:text-xl font-semibold'
 									: 'text-red-500 text-md md:text-xl font-semibold'
 							}
 						>
 							{' '}
-							{quote?.d?.toFixed(2)}
+							{quote[0]?.change.toFixed(2)}
 						</div>
 						<div>
 							<div
 								className={
-									quote?.d > 0
+									quote.change > 0
 										? 'text-green-500 text-md md:text-xl font-semibold'
 										: 'text-red-500 text-md md:text-xl font-semibold'
 								}
 							>
-								({quote?.dp?.toFixed(2)} %)
+								({quote[0]?.changesPercentage.toFixed(2)} %)
 							</div>
 						</div>
 					</div>
+					{/* ))} */}
 				</CardContent>
+
 				<CardFooter></CardFooter>
 			</Card>
 		</main>
