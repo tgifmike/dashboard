@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/table';
 import React, { useEffect, useState } from 'react';
 import { useZipCode } from '../context/ZipCodeContext';
+import { Button, buttonVariants } from '@/components/ui/button';
+import Link from 'next/link';
 
 const extendedForecast = () => {
 	const [forecast, setForcast] = useState<any>();
@@ -49,6 +51,11 @@ const extendedForecast = () => {
 
 	return (
 		<main className="">
+			<div className="p-2">
+				<Link href="/" className={buttonVariants({ variant: 'outline' })}>
+					Back
+				</Link>
+			</div>
 			<Card>
 				<CardHeader>
 					<CardTitle>

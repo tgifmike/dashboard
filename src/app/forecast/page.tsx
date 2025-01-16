@@ -1,5 +1,7 @@
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import Link from 'next/link';
 import React from 'react'
 
 const page = () => {
@@ -134,6 +136,12 @@ const page = () => {
 
   return (
 		<main>
+			<div className='p-2'>
+        <Link href="/" className={buttonVariants({ variant: 'outline'})}>
+					Back
+				</Link>
+			</div>
+
 			<Card>
 				<CardHeader>
 					<CardTitle>Stock Dividend Calculator</CardTitle>
@@ -330,7 +338,9 @@ const page = () => {
 											</span>
 										))}
 									</TableCell>
-									<TableCell className='text-right'>{item.yearDividendPayment.toFixed(2)}</TableCell>
+									<TableCell className="text-right">
+										{item.yearDividendPayment.toFixed(2)}
+									</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
