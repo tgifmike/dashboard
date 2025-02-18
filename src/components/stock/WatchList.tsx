@@ -47,7 +47,7 @@ const WatchList = () => {
 	// const crudeOil = 'CL=F';
 	// const [oilQuote, setOilQuote] = useState<any>();
 
-	const stockArray = ['HRZN', 'AGNC', 'VZ', 'GPN', 'CL=F']
+	const stockArray = ['HRZN', 'AGNC', 'VZ', 'GPN', 'CL=F', 'PMT']
 	const [stockQuote, setStockQuote] = useState<any[]>([]);
 	// const quoteArray:any = []
 
@@ -81,7 +81,7 @@ const WatchList = () => {
 
 
 	//console.log(quoteArray);
-	console.log(stockQuote)
+	//console.log(stockQuote)
 
 	return (
 		<main className="w-5/6 m-1">
@@ -212,7 +212,7 @@ const WatchList = () => {
 						</Link>
 					</div>
 					<div className="p-2">
-						<Link href="/forecast" className={buttonVariants()}>
+						<Link href="/dividendNew" className={buttonVariants()}>
 							Stock Dividends
 						</Link>
 					</div>
