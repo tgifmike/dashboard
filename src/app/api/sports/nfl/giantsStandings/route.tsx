@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
 	const API_SPORTS_KEY = process.env.API_SPORTS_KEY;
-	const endpoint = `https://v1.american-football.api-sports.io/standings?league=1&season=2024&team=4`;
+	const endpoint = `https://v1.american-football.api-sports.io/standings?league=1&season=2023&team=4`;
 
 	try {
 		const response = await fetch(endpoint, {

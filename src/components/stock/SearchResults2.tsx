@@ -13,7 +13,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 
-import { FC, useState } from 'react';
+
 
 interface StockSymbol {
 	symbol: string;

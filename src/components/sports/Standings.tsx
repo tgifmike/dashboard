@@ -26,7 +26,7 @@ const Standings = () => {
 		return <div>No data available</div>;
 	}
 
-	
+	console.log('stadings' , standings)
 
 	return (
 		<main>
